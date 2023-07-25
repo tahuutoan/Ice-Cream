@@ -1,0 +1,102 @@
+﻿@model IceCream.ViewModel.MemberViewModel
+@using PagedList.Mvc
+@{ 
+    ViewBag.Title = "Danh sách thành viên";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .img-user2 {
+        width: 120px;
+        height: 100px;
+        object-fit: cover;
+    }
+</style>
+<h2>Danh sách thành viên</h2>
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thành công</strong></div>
+}
+<div class="box_content">
+    <form action="@Url.Action("ListArticle")" method="get">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Từ khóa</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div> 
+    </form>
+    <p>Có tổng số <strong>@Model.Users.TotalItemCount</strong> thành viên</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th>Tên thành viên</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ email</th>
+                <th>Bệnh đang mắc</th>
+                <th style="width: 150px">Hình ảnh</th>
+                <th style="width: 200px">Phân quyền</th>
+                <th style="width: 80px">Hoạt động</th>
+            </tr>
+            @foreach (var item in Model.Users)
+            {
+                <tr data-id="@item.Id">
+                    <td>@Html.DisplayFor(model => item.Fullname)</td>
+                    <td>@Html.DisplayFor(model => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(model => item.Email)</td>
+                    <td>
+                        @if (item.Avatar != null)
+                        {
+                            <img src="@Path.Combine("/images/users/", item.Avatar)" alt="@item.Fullname" class="img-user2" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/icon_profile.png"  class="img-user2"/>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(model => item.Active)</td>
+                    <td>
+                        @Html.ActionLink("Sửa", "UpdateMember", new { memberId = item.Id }) -
+                        @*<a href="javascript:;" onclick="deleteMember('@item.Id')" style="color: red;">Xóa</a>*@
+                    </td>
+                </tr>
+            }
+            @if (Model.Users.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="5">
+                    @Html.PagedListPager(Model.Users, page => Url.Action("ListMember"
+                        , new { page, name = Model.Name, role = Model.Role}))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteMember(id) {
+            if (confirm("Bạn có chắc chắn không?")) {
+                $.post("/Member/DeleteMember", { memberId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+}

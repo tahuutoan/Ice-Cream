@@ -1,0 +1,25 @@
+﻿@model IceCream.Models.User
+ 
+<div class="bg-gray info-user">
+    <div class="text-center pb-lg-4 pb-3">
+        @if (Model.Avatar != null)
+        {
+            <img class="avatar" src="@Path.Combine("/images/users/", Model.Avatar)" alt="@Model.Fullname" />
+        }
+        else
+        {
+            <img class="avatar" src="~/Content/images/icon_profile.png" alt="avatar" />
+        }
+    </div>
+    <p>Họ và tên: <b>@Model.Fullname</b></p>
+    <p>Email: <b>@Model.Email</b></p>
+    <p>Số điện thoại: <b>@Model.PhoneNumber</b></p>
+    <p>Địa chỉ:<b>@Model.Address</b></p> 
+    <ul class="user-nav">
+        <li><a href="@Url.Action("ProfileInfo")"><i class="fas fa-tachometer"></i> Tổng quan</a></li>
+        <li><a href="@Url.Action("UpdateInfo")"><i class="fas fa-user-edit"></i> Chỉnh sửa hồ sơ</a></li>
+        <li><a href="@Url.Action("ChangePassword")"><i class="fas fa-key"></i> Đổi mật khẩu</a></li>
+        <li><a href="@Url.Action("LogOut")"><i class="fas fa-sign-out"></i> Thoát</a></li>
+    </ul>
+</div>
+

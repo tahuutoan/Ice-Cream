@@ -1,0 +1,79 @@
+﻿@model IceCream.ViewModel.UpdateInfoViewModel
+@{
+    ViewBag.Title = "Cập nhật thông tin";
+}
+
+<div class="bg-breadcrumb">
+    <div class="container overflow-hidden"> 
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cập nhật thông tin</li>
+        </ol>
+    </div>
+</div> 
+<div class="container update-user">
+    <div class="row my-lg-5 my-3">
+        <div class="col-sm-12 col-lg-3 my-lg-0 my-3">
+            @Html.Action("UserNav")
+        </div>
+        <div class="col-sm-12 col-lg-9">
+            <div class="title-section card-rounding">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span class="span">Cập nhật thông tin</span>
+            </div>
+            @if (ViewBag.Result == 1) 
+            {
+                <div class="alert alert-success">Cập nhật thành công.</div>
+            }
+            @using (Html.BeginForm("UpdateInfo", "User", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-user" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email)
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email của bạn", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Fullname)
+                    @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control", placeholder = "Họ và tên" })
+                    @Html.ValidationMessageFor(model => model.Fullname)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber)
+                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Điện thoại" })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber)
+                </div> 
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address)
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+                    @Html.ValidationMessageFor(model => model.Address)
+                </div> 
+                <div class="form-group my-avatar">
+                    @Html.LabelFor(model => model.Avatar)
+                    @Html.TextBoxFor(model => model.Avatar, new { type = "file"})
+                    @Html.ValidationMessageFor(model => model.Avatar)
+                    @if (Model.Avatar != null)
+                    {
+                        <img class="img-border" src="@Path.Combine("/images/users/",  Model.Avatar)"  />
+                    } 
+                </div> 
+                @*<div class="form-group"> 
+                    @Html.LabelFor(model => model.Email, new { @classs = "d-none"})
+                    <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                </div>*@ 
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-login"><i class="fal fa-check mr-1"></i> CẬP NHẬT</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,98 @@
+﻿@model IceCream.ViewModel.ShoppingCartViewModel
+@using Helpers
+@{ 
+    ViewBag.Title = "Giỏ hàng của bạn";
+}
+
+<div class="bg-breadcrumb">
+    <div class="container"> 
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+        </ol>
+    </div>
+</div> 
+<div class="container">
+    @if (!Model.CartItems.Any())
+    {
+        <p class="alert-null my-lg-4 my-3">
+            Giỏ hàng của bạn đang trống <a href="@Url.Action("AllProduct", "Home")" class="back"><i class="far fa-shopping-cart"></i>Tiếp tục mua hàng</a>
+        </p>
+    }
+    else
+    {
+        using (Html.BeginForm())
+        {
+            <div class="table-responsive checkout">
+                <table class="table">
+                    <tr>
+                        <th class="text-xl-left" colspan="2">Sản phẩm</th>
+                        <th class="d-none d-md-block">Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th style="width: 50px;"></th>
+                    </tr>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        var p = item.Price ?? 0;
+                        var price = item.Count * p;
+                        @*<input type="hidden" value="@price.ToString("N0").Replace(",", "")" name="productPrice" />*@
+                        <tr data-id="@item.RecordId">
+                            <td class="text-xl-left" style="width: 120px;">
+                                <img src="@Path.Combine("/images/products/", item.Product.ListImage.Split(',')[0])?w=100" class="img-checkout" alt="@item.Product.Name"/>
+                            </td>
+                            <td class="text-xl-left">
+                                <h4 class="text-nowrap">
+                                    @Html.ActionLink(item.Product.Name, "ProductDetail", "Home", new { url = item.Product.Url }, null)
+                                </h4>
+                                <p class="d-none d-md-block mb-0"> 
+                                    Mã sản hẩm:
+                                    @if (item.Product.Description != null)
+                                    {
+                                        <span> @item.Product.Description</span>
+                                    }
+                                    else
+                                    {
+                                        <span> N/A</span>
+                                    }
+                                </p>
+                                @*@if (item.Product.Trademark != null)
+                                {
+                                    <p>Thương hiệu: @item.Product.Trademark.Name</p>
+                                }*@
+                            </td>
+                            <td>
+                                @if (p == 0)
+                                {
+                                    <span class="d-none d-md-block font-bold">
+                                        Liên hệ
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="d-none d-md-block font-bold">
+                                        @p.ToString("N0")
+                                    </span>
+                                }
+                                 
+                            </td>
+                            <td>
+                                <input type="hidden" name="RecordId" value="@item.RecordId"  placeholder=""/>
+                                <input type="number" id="orderQuantity" name="Quantity" required="" size="5" min="1" max="999" value="@item.Count" placeholder="">
+                            </td> 
+                            <td class=" font-bold"><strong id="total">@price.ToString("N0")đ</strong></td>
+                            <td>
+                            <a href="#" class="btn-remove" onclick="deleteProduct(@item.RecordId)" data-id="@item.RecordId">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="text-center py-lg-5 py-3">
+                <button type="submit" class="ripple-btn"><i class="fa fa-refresh"></i> Cập nhật đơn hàng</button>
+                <a href="@Url.Action("CheckOut")" class="ripple-btn"><i class="fa fa-check mr-1"></i>Xác nhận</a>
+            </div>
+            
+        }
+    }
+</div>

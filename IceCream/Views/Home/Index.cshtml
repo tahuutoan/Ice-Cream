@@ -1,0 +1,260 @@
+﻿@model IceCream.ViewModel.HomeViewModel
+@using IceCream.Models
+@{ 
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = config.Title;
+    ViewBag.Description = config.Description;
+} 
+ 
+@if (Model.Banners.Any(p => p.GroupId == 1 && p.Image != null))
+{
+    <section class="slick-banner">
+        @foreach(var banner in Model.Banners.Where(p => p.GroupId == 1 && p.Image != null))
+        {
+            <img src="@Path.Combine("/images/banners/", banner.Image)" alt="@banner.BannerName" />
+            <div class="content">
+                <p class="name">@banner.Slogan</p>
+                <p class="desc pb-lg-4 pb-3">@banner.Content</p>
+               @if (banner.Url != null)
+                {
+                   <a href="@banner.Url">Xem thêm</a>
+                }
+
+            </div>
+        }
+    </section>
+}
+
+
+<section class="introduce my-lg-5 my-4">
+    <div class="container">
+        <div class="text-center">VỀ CHÚNG TÔI</div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="round-img">
+                    @if (config.AboutImage != null)
+                    {
+                        <img src="@Path.Combine("/images/configs/", config.AboutImage)" alt="@config.Title" class="about-img" />
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="intro-item">
+                    <img src="~/Content/images/intro-su-menh.svg" alt="su menh" />
+                    <div class="content">
+                        <p class="name">sứ mệnh</p>
+                        <p class="desc truncate-h">
+                            Với sứ mệnh lan tỏa giá trị và phong cách sống lành mạnh, khoa học, tự nhiên ra xã hội, các thành viên của
+                            IceCream đã và đang không ngừng cống hiến, trao đi giá trị về sức khỏe và cuộc sống đến cho nhiều cá nhân, gia đình.
+                        </p>
+                    </div>
+                </div>
+                <div class="intro-item">
+                    <img src="~/Content/images/intro-tam-nhin.svg" alt="su menh" />
+                    <div class="content">
+                        <p class="name">tầm nhìn</p>
+                        <p class="desc truncate-h">
+                            Xây dựng IceCream trở thành một trong những cộng đồng chăm sóc sức khỏe chủ động lớn nhất Việt Nam và vươn ra thế giới.
+                        </p>
+                    </div>
+                </div>
+                <div class="intro-item">
+                    <img src="~/Content/images/intro-gia-tri-cit-loi.svg" alt="su menh" />
+                    <div class="content">
+                        <p class="name">giá trị cốt lõi</p>
+                        <p class="desc truncate-h">
+                            Bên cạnh các giá trị định hình nên hình ảnh thương hiệu của IceCream thì "Thiện tâm - Cống hiến - Đoàn kết"
+                            chính là phần không thể thiếu được.
+                        </p>
+                    </div>
+                </div>
+                <div class="intro-item">
+                    <img src="~/Content/images/intro-gia-tri-cit-loi.svg" alt="su menh" style="opacity: 0" />
+                    @*<div class="content">
+                        <a href="@Url.Action("ArticleDetail", new { url = config.FileUrl})" class="watch-more">Xem thêm</a>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="form-contact my-lg-5 my-4">
+                    @Html.Action("ContactForm")
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 d-lg-block"></div>
+        </div>
+    </div>
+</section>
+
+<section class="count-up">
+    <div class="container">
+        <div class="row py-lg-5 py-3">
+            <div class="col-lg-3 col-md-3 col-6">
+                <div class="round-item">
+                    <div class="count-item">
+                        <img src="~/Content/images/coutup/1.svg" alt="products" />
+                        <p class="counter">10</p>
+                    </div>
+                </div>
+                <p class="info">sản phẩm được đưa vào thị trường</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-6">
+                <div class="round-item">
+                    <div class="count-item">
+                        <img src="~/Content/images/coutup/2.svg" alt="products" />
+                        <p class="counter">1675</p>
+                    </div>
+                </div>
+                <p class="info tele">thành viên tham gia</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-6">
+                <div class="round-item">
+                    <div class="count-item">
+                        <img src="~/Content/images/coutup/3.svg" alt="products" />
+                        <p class="counter">4562</p>
+                    </div>
+                </div>
+                <p class="info tele">khách hàng thân thiết</p>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-6">
+                <div class="round-item">
+                    <div class="count-item">
+                        <img src="~/Content/images/coutup/4.svg" alt="products" />
+                        <p class="counter">1967</p>
+                    </div>
+                </div>
+                <p class="info tele">lượt đánh giá hài lòng</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="product-home pt-lg-5 pt-3">
+    @if (Model.ProductHome.Any())
+    {
+        <div class="container"> 
+            <div class="title-section mb-lg-5 mb-4"><span>SẢN PHẨM CỦA CHÚNG  TÔI</span></div>
+            <div class="row row-gutter-8">
+                @foreach (var pro in Model.ProductHome)
+                {
+                    int i = 0;
+                    <div class="col-lg-3 col-md-3 col-6">
+                        <div class="pro-item">
+                            <a href="@Url.Action("ProductDetail", new { url = pro.Url})">
+                                @if (pro.ListImage != null)
+                                {
+                                    <img src="@Path.Combine("/images/products/", pro.ListImage.Split(',')[0])" alt="@pro.Name" />
+                                } 
+                            </a>
+                            <div class="product-box-control justify-content-center">
+                                <div class="add-to pointer">
+                                    <a class="stretched-link" title="Thêm vào sản phẩm yêu thích"  href="javascript:;" onclick="addToWishlist(@pro.Id, 'add')"><i class="fas fa-heart"></i></a>
+                                </div>
+                                <div class="add-to"> 
+                                    <a class="stretched-link gray" title="Thêm vào giỏ hàng" href="javascript:;" onclick="PlusItem(@pro.Id)">
+                                    <i class="fal fa-plus"></i></a>
+                                </div>
+                            </div>
+
+                            <div class="content">
+                                <a href="@Url.Action("ProductDetail", new { url = pro.Url})">
+                                    <p class="name truncate-h">@pro.Name</p>
+                                </a>
+                                <p><a href="@Url.Action("Contact")" class="contact">Liên hệ</a></p>
+                                <p class="star"> 
+                                    @for (i = 0; i < 5; i++){
+                                        <i class="fas fa-star"></i>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @*<div class="col-lg-3 col-md-3 col-6 mb-lg-4 mb-3">
+                    <div class="pro-item">
+                        <a href="#1"><img src="~/Content/images/product/c/2.jpeg" alt="product" /></a>
+                        <div class="content">
+                            <a href="#1"><p class="name truncate-h">Sản phẩm lõi ( Enzyme) Sản phẩm lõi ( Enzyme)Sản phẩm lõi ( Enzyme)Sản phẩm lõi ( Enzyme)</p></a>
+                            <p><a href="#1" class="contact">Liên hệ</a></p>
+                            <p class="star">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </p>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    }
+</section>
+
+
+
+<section class="news"> 
+    @if (Model.ArticleHome.Any())
+    {
+        <div class="container overflow-hidden py-lg-5 py-4">
+            <div class="title-section pb-lg-5 pb-4"><span>tin tức mới nhất</span></div>
+            <div class="row no-gutters my-lg-4 my-3">
+                @foreach (var news in Model.ArticleHome)
+                {
+                    <div class="col-lg-6 col-md-6 col-12">
+                        <div class="news-item">
+                            <div class="round-img">
+                                <a href="@Url.Action("ArticleDetail", new { url = news.Url})">
+                                    @if (news.Image != null)
+                                    {
+                                        <img src="@Path.Combine("/images/articles/", news.Image)" alt="@news.Subject" />
+                                    }
+                                </a>
+                            </div>
+                            <div class="content pr-1">
+                                <a href="@Url.Action("ArticleDetail", new { url = news.Url})">
+                                    <div class="name truncate-h">@news.Subject</div>
+                                </a>
+                                <a href="@Url.Action("ArticleCategory", new { url = news.ArticleCategory.Url})">
+                                    <div class="kind truncate-h">@news.ArticleCategory.CategoryName</div>
+                                </a> 
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @*<div class="col-lg-6 col-md-6 col-12">
+                    <div class="news-item">
+                        <div class="round-img">
+                            <a href="@Url.Action("Index")"><img src="~/Content/images/product/1.jpg" alt="news" /></a>
+                        </div>
+                        <div class="content pr-1">
+                            <a href="@Url.Action("Index")">
+                                <div class="name truncate-h">Khám Phá Khoa Học Cho Thấy Niềm Tin Có Thể Ảnh Hưởng Đến Sự Sống</div>
+                            </a>
+                            <a href="@Url.Action("Index")">
+                                <div class="kind truncate-h">PHÁT TRIỂN BẢN THÂN</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+            <div class="text-center">
+                <a href="@Url.Action("AllArticle")" class="watch-more">
+                    <i class="fas fa-long-arrow-alt-right mr-1"></i>
+                    <span>Xem thêm các tin tức mới nhất</span>
+                </a>
+            </div>
+        </div>
+    }
+</section>
+ 
+@section scripts{
+    <script>IndexJs();</script>
+} 
+

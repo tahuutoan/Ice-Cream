@@ -1,0 +1,78 @@
+﻿@model IceCream.Models.User
+@{
+    ViewBag.Title = "Đăng ký thành viên";
+}
+<div class="bg-breadcrumb">
+    <div class="container overflow-hidden"> 
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Đăng ký</li>
+        </ol>
+    </div> 
+</div>  
+
+
+@if (ViewBag.Result == "register")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Đăng ký thành công, hãy truy cập gmail để xác minh tài khoản của bạn</strong></div>
+} 
+<section class="box-user">
+    <div class="container py-lg-5 py-4">
+        <div class="row"> 
+            <div class="col-lg-7 col-md-7 col-12 ">
+                <img src="~/Content/images/bg-page/Register.svg" alt="IceCream" class="img-login-left" />
+            </div>
+            <div class="col-lg-5 col-md-5 col-12">
+                <div class="form-user">
+                    <p class="title-section pb-lg-5 pb-4"><span>Đăng ký tài khoản</span></p>
+                       @using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "form-header" }))
+                        { 
+                            @Html.ValidationSummary(true)
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control", @placeholder = "Họ tên của bạn" })
+                                @Html.ValidationMessageFor(model => model.Fullname)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email của bạn" })
+                                @Html.ValidationMessageFor(model => model.Email)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Số điện thoại" })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber)
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                                @Html.ValidationMessageFor(model => model.Address)
+                            </div> 
+                            <div class="form-group"> 
+                                @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+                                @Html.ValidationMessageFor(model => model.Username)
+                            </div>
+                            <div class="form-group">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </div>  
+                            @*<div class="form-group">
+                                <label class="form-check-label">
+                                    @Html.CheckBox("Agree", new { @checked = "checked", @class = "mr-1" })
+                                    Đồng ý nhận khuyến mãi và ưu đãi độc quyền từ hoanghiencosmetics.vn.
+                                </label> 
+                            </div>*@  
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-login"><i class="fas fa-user-plus mr-1"></i> Đăng ký</button>
+                            </div>
+
+                            <a class="back" href="@Url.Action("Login", "User")"><i class="fas fa-sign-in"></i>Đăng nhập</a>
+                        }
+                </div>
+            </div>
+        </div>
+
+     
+    </div>
+</section>
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

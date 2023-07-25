@@ -1,0 +1,39 @@
+﻿@using IceCream.Models
+@{ var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = "Liên hệ";
+}   
+<div class="bg-breadcrumb"> 
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
+        </ol>
+    </div> 
+</div> 
+ 
+<section class="contact-me">
+    <div class="container my-lg-4 my-3 overflow-hidden">
+        <div class="box-border"> 
+            <div class="row pb-4">
+                <div class="col-lg-6 col-md-6 col-12 mb-5" >
+                    <div class="bg-white shadow p-3 mt-lg-5 mt-3">
+                        @if (config.InfoFooter != null)
+                        {
+                            <div class="content-detail">
+                                @Html.Raw(config.InfoFooter)
+                            </div>
+                        }
+                    </div>
+                </div> 
+                <div class="col-lg-6 col-md-6 col-12">@Html.Action("ContactForm")</div>
+            </div>
+          
+            @if (config.GoogleMap != null)
+            {
+                <div class="map">
+                    @Html.Raw(config.GoogleMap)
+                </div>
+            }
+        </div>
+    </div>
+</section>

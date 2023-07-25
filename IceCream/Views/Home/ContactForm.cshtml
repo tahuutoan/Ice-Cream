@@ -1,0 +1,34 @@
+﻿@model IceCream.Models.Contact
+
+<div id="contact-form">
+    <div class="text-center title-contact">DỊCH VỤ TƯ VẤN ONLINE</div>
+
+    <form id="contact_form" class="contact-form-input">
+        @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
+        @*<div class="text-center desc">
+        </div>*@
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Fullname, new { @class = "form-control", placeholder = "Tên", @required = "" })
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email", @required = "" })
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control", placeholder = "Số điện thoại", @required = "" })
+        </div>
+        <div class="form-group">
+            @Html.TextAreaFor(model => model.Body, new { @class = "form-control", rows = 3, placeholder = "Nội dung", @required = "" })
+        </div>
+        @*<div class="form-group text-center pb-3">
+
+                <input type="submit" class="form-control send" name="Gửi" value="Gửi" />
+            </div>*@
+
+        <div class="text-center">
+            <button type="submit" class="btn-contact">ĐĂNG KÝ</button>
+        </div>
+    </form>
+</div>
+
+

@@ -1,0 +1,56 @@
+﻿@model IceCream.ViewModel.FooterViewModel
+@using IceCream.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-5 col-12">
+                @if (config.InfoFooter != null)
+                {
+                    <div class="content-detail">
+                        @Html.Raw(config.InfoFooter)
+                    </div> 
+                }
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-12">
+                <div class="title-ft">
+                    THÔNG TIN
+                </div>
+                <ul class="ul-block info">
+                    <li><a href="@Url.Action("AllProduct")">Sản phẩm</a></li> 
+                    @foreach(var item in Model.ArticleCategories.Where(a => a.ParentId == null))
+                    {
+                        <li><a href="@Url.Action("ArticleCategory", new { url = item.Url})">@item.CategoryName</a></li>
+                    } 
+                    <li><a href="@Url.Action("Contact")">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-12">
+                <div class="title-ft">
+                    FANPAGE
+                </div>
+                <div class="embed-responsive">
+                    <div class="fb-page" data-href="@config.Facebook" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
+                        <blockquote cite="@config.Facebook" class="fb-xfbml-parse-ignore">
+                            <a href="@config.Facebook">@config.Title</a>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <ul class="icons">
+                    <li><a href="@config.Facebook" title="Facebook" class="fb"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="@config.Twitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="@config.Youtube" title="Youtube"><i class="fab fa-youtube"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<div class="copyright">
+    <span>Copyright by EZCARE 2021. Designed by Vicogroup.vn</span>
+</div>

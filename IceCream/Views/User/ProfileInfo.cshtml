@@ -1,0 +1,119 @@
+﻿@model IceCream.ViewModel.ListUserIntroViewModel
+@using PagedList.Mvc
+@using Helpers
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+<div class="bg-breadcrumb">
+    <div class="container overflow-hidden"> 
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thông tin tài khoản</li>
+        </ol>
+    </div>
+</div> 
+
+<div class="container">
+    <div class="row my-lg-5 my-3">
+        <div class="col-sm-12 col-lg-3 my-lg-0 my-3">
+            @Html.Action("UserNav")
+        </div>
+        <div class="col-sm-12 col-lg-9"> 
+            <div class="title-section my-4"><span>Đơn hàng gần đây</span></div>
+            @if (Model.User.Orders.Any())
+            {
+                <table class="table order-view">
+                    <tr>
+                        <th>Mã đơn hàng</th>
+                        <th>Sản phẩm</th>
+                        <th>Tổng tiền (VNĐ)</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    @foreach (var order in Model.User.Orders.Take(10))
+                    {
+                        <tr>
+                            <td>@order.MaDonHang</td>
+                            <td>
+                                @foreach (var orderDetail in order.OrderDetails)
+                                {
+                                    <div>
+                                        <a href="@Url.Action("ProductDetail","Home", new { url = orderDetail.Product.Url})" class="text-green">
+                                            - @orderDetail.Product.Name
+                                        </a>
+                                    </div>
+                                }
+                            </td>
+                            <td>@order.OrderDetails.Sum(p => p.Price * p.Quantity)</td>
+                            <td>@Html.DisplayFor(a => order.Status)</td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            { 
+                <div class="alert alert-info">Bạn chưa mua đơn hàng.</div>
+            }
+
+            <div class="title-section mt-lg-5 mt-4"><span>Sản phẩm yêu thích</span></div>
+            @if (Model.User.Products.Any())
+            {
+                <div class="row product-liked">
+                    @foreach (var product in Model.User.Products) 
+                    {
+                        <div class="col-sm-12 col-6 col-lg-3 mt-lg-0 mt-3" data-wishlist="@product.Id">
+                            <div class="item-img">
+                                @if(product.ListImage != null)
+                                {
+                                    <a href="@Url.Action("ProductDetail", "Home", new {url = product.Url})"
+                                         class="product-name mb-2 truncate-h">
+                                        <img src="@Path.Combine("/images/products/", product.ListImage.Split(',')[0])"
+                                             class="img-fluid" alt="@product.Name"/>
+                                    </a>
+                                }
+                                <div class="product-box-control row justify-content-center">
+                                    <div class="add-to pointer">
+                                        <a class="stretched-link" href="javascript:;" title="Xóa khỏi danh sách yêu thích" onclick="addToWishlist(@product.Id, 'remove')"><i class="fas fa-times"></i></a>
+                                    </div>
+                                    <div class="add-to">
+                                        <a class="stretched-link gray" href="javascript:;" title="Thêm vào giỏ hàng" onclick="PlusItem(@product.Id)"><i class="fal fa-plus"></i></a>
+                                    </div>
+                                </div>
+                                @if (product.SaleOff != null && product.Price != null)
+                                {
+                                    var promonalauto = ((1 - product.SaleOff / product.Price) * 100).Value.ToString("#,##");
+                                    <p class="pr-sale">-@promonalauto%</p>
+                                }
+                            </div>
+                            <div class="py-lg-3 py-2">
+                                <a href="@Url.Action("ProductDetail", "Home", new {url = product.Url})" class="product-name mb-2 truncate-h">@product.Name</a>
+                                @if (product.SaleOff != null && product.Price != null)
+                                {
+                                    <span class="price my-2"> @product.SaleOff.GetValueOrDefault().ToString("N0")đ</span>
+                                    <span class="saleoff">@product.Price.GetValueOrDefault().ToString("N0")đ</span>
+                                }
+                                else if (product.Price != null)
+                                {
+                                    <div class="price">@product.Price.GetValueOrDefault().ToString("N0")đ</div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Bạn chưa có sản phẩm yêu thích.</div>
+            }
+        </div>
+    </div>
+    <div class="row">
+       @if (Model.ListUserIntro.Any())
+        {
+            foreach(var introUserItem in Model.ListUserIntro)
+            {
+                <div>@introUserItem.Fullname</div>
+            }
+        }
+    </div>
+</div>

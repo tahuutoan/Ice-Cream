@@ -1,0 +1,69 @@
+﻿@model IceCream.Models.Product
+@{
+    int i = 0;
+}
+    
+ @*<div class="product-item" >
+    <div class="round-img">
+        @if(Model.ListImage != null)
+        {
+            <a href="@Url.Action("ProductDetail", new { url = Model.Url})">
+                <img src="@Path.Combine("/images/products/", Model.ListImage.Split(',')[0])" alt="@Model.Name" />
+            </a>
+        }
+    </div>
+    <div class="content product-sale">
+        <a href="@Url.Action("ProductDetail", new { url = Model.Url})"><p class="name mb-1 truncate-h">@Model.Name</p></a>
+        <div class="round-price">
+            @if (Model.SaleOff > 0)
+            {
+                <p class="price mb-1 price-blur"><del>@Html.DisplayFor(a => Model.Price) </del></p>
+            }
+            else
+            {
+                <p class="price mb-1 price-blur" style="opacity: 0;"><del>@Html.DisplayFor(a => Model.Price) </del></p>
+                <p class="price mb-1">@Html.DisplayFor(a=>Model.Price)</p>
+            }
+
+            @if (Model.SaleOff > 0)
+            {
+                <p class="price mb-1">@Html.DisplayFor(a=>Model.SaleOff)</p>
+            }
+            <p class="price">@Html.DisplayFor(a=>Model.Price)</p>
+        </div>
+    </div>
+</div>*@ 
+
+
+<div class="pro-item">
+    <a href="@Url.Action("ProductDetail", new { url = Model.Url})">
+        @if (Model.ListImage != null)
+        {
+            <img src="@Path.Combine("/images/products/", Model.ListImage.Split(',')[0])" alt="@Model.Name" />
+        } 
+    </a>
+    <div class="product-box-control justify-content-center">
+        <div class="add-to pointer">
+            <a class="stretched-link" title="Thêm vào sản phẩm yêu thích" href="javascript:;" onclick="addToWishlist(@Model.Id, 'add')"><i class="fas fa-heart"></i></a>
+        </div>
+        <div class="add-to"> 
+            <a class="stretched-link gray" title="Thêm vào giỏ hàng" href="javascript:;" onclick="PlusItem(@Model.Id)">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <a href="@Url.Action("ProductDetail", new { url = Model.Url})">
+            <p class="name truncate-h">@Model.Name</p>
+        </a>
+        
+        <p class="price">@Html.DisplayFor(a=>Model.Price)</p>
+        @*<p><a href="@Url.Action("Contact")" class="contact">Liên hệ</a></p>*@
+        @*<p class="star"> 
+            @for (i = 0; i < 5; i++){
+                <i class="fas fa-star"></i>
+            }
+        </p>*@
+    </div>
+</div>

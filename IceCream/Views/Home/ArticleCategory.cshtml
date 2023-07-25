@@ -1,0 +1,44 @@
+﻿@using PagedList.Mvc
+@model IceCream.ViewModel.CategoryArticleViewModel
+@{ 
+    ViewBag.Title = Model.Category.TitleMeta ?? Model.Category.CategoryName;
+    ViewBag.Description = Model.Category.DescriptionMeta ?? Model.Category.Description;
+}
+<div class="bg-breadcrumb">  
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page"> @Model.Category.CategoryName</li>
+        </ol>
+    </div> 
+</div> 
+<div class="container py-lg-4 py-3">  
+    <div class="row">
+        <div class="col-sm-12 col-lg-3  order-lg- order-1">
+            @Html.Action("MenuArticle")
+        </div>
+        <div class="col-sm-12 col-lg-9 pr-lg-0 order-lg-1 order-0">
+            <div class="row row-gutter-10">
+                @if (Model.Articles.Any())
+                {
+                     foreach (var article in Model.Articles)
+                     {
+                        <div class="col-lg-4 col-md-4 col-12 mb-lg-5 mb-4">
+                            @Html.Partial("_ArticleItem", article)
+                        </div>
+                     } 
+                }
+               else
+               {
+                   <p class=" alert alert-success small">Nội dung hiện chưa được cập nhật.Vui lòng quay lại sau !!!</p>
+               }
+            </div>
+            @if (Model.Articles.PageCount > 1)
+            { 
+                <div class="text-right mt-3">
+                   @Html.PagedListPager(Model.Articles, page => Url.Action("AllArticle", new { page }))
+                </div>
+            }
+        </div>
+    </div>
+</div>

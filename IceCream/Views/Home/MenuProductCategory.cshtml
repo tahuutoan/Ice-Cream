@@ -1,0 +1,64 @@
+﻿@model IceCream.ViewModel.MenuProductCategoryViewModel
+@using IceCream.Models;
+@{
+
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    var a = 1;
+}
+<div class="title-category mb-3">
+    danh mục sản phẩm
+</div>
+<div class="category" id="category">
+    @foreach (var category in Model.ProductCategories.Where(l => l.ParentId == null))
+    {
+        var hasChild = Model.ProductCategories.Any(l => l.ParentId == category.Id);
+        <div class="card">
+            <div class="card-header" data-toggle="collapse" data-target="#cat-@a">
+                <a href="@Url.Action("ProductCategory", new { url = category.Url })">@category.CategoryName</a>
+                @if (hasChild)
+                { 
+                    <i class="fal fa-chevron-down" data-toggle="collapse" data-target="#cat-@a" aria-controls="#cat-@a"></i>
+                }
+            </div>
+            @if (hasChild)
+            {
+                <div id="cat-@a" class="collapse show" @*data-parent="#category"*@>
+                    <div class="card-body">
+                        <ul class="ul-block ul-child-category">
+                            @foreach (var child in Model.ProductCategories.Where(l => l.ParentId == category.Id))
+                            {
+                                <li><a href="@Url.Action("ProductCategory", new { url = child.Url })"> @child.CategoryName</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+        a++;
+    }
+</div>
+
+@if (Model.ProductHot.Any())
+{
+    <div class="title-category my-lg-4 my-3">
+        Sản phẩm nổi bật
+    </div>   
+    foreach (var pro in Model.ProductHot)
+    {
+        <div class="media media-recently product-typical">
+            @if (pro.ListImage != null)
+            {
+                <a href="@Url.Action("ProductDetail", new { url = pro.Url })" class="round-img mr-2">
+                    <img src="@Path.Combine("/images/products/", pro.ListImage.Split(',')[0])"
+                            class="img img--recently p-1" alt="@pro.Name" />
+                </a>  
+            } 
+            <div class="media-body content">
+                <a href="@Url.Action("ProductDetail", new { url = pro.Url })" class="truncate-h pro-name">@pro.Name</a> 
+                @*<div class="price" style="color: #ccc"><del>@Html.DisplayFor(p => pro.Price)</del></div>
+                <div class="sale" style="color: #9A0101;">@Html.DisplayFor(p => pro.SaleOff)</div>*@
+            </div>
+        </div>  
+    }
+}
+

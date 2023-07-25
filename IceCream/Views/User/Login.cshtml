@@ -1,0 +1,55 @@
+﻿@model  IceCream.ViewModel.UserLoginModel
+@{
+    ViewBag.Title = "Đăng nhập";
+} 
+<div class="bg-breadcrumb">
+    <div class="container overflow-hidden"> 
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Đăng nhập</li>
+        </ol>
+    </div>
+</div> 
+<section class="box-user">
+    <div class="container py-lg-5 py-4">
+        <div class="row"> 
+            <div class="col-lg-7 col-md-7 col-12">
+                <img src="~/Content/images/bg-page/Login.svg" alt="IceCream" class="img-login-left" />
+            </div>
+            <div class="col-lg-5 col-md-5 col-12">
+                <div class="form-user">
+                    <p class="title-section pb-lg-5 pb-4"><span>Đăng nhập hệ thống IceCream</span></p>
+                    <p class="sign-up"> 
+                        Bạn chưa có tài khoản?
+                        <a class="dk-right" href="@Url.Action("Register","User")"><i class="fas fa-registered"></i> Đăng ký</a>
+                        
+                    </p>
+                    @using (Html.BeginForm("Login", "User", FormMethod.Post, new { @class = "form-header" }))
+                    {
+                        @Html.ValidationSummary(true)
+                        @Html.AntiForgeryToken()
+                        <div class="form-group form-row">  
+                            @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+                            @Html.ValidationMessageFor(model => model.Username)
+                        </div> 
+                        <div class="form-group form-row">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Mật khẩu" })
+                            @Html.ValidationMessageFor(model => model.Password) 
+                        </div> 
+                        <div class="my-3">
+                            <a href="@Url.Action("ForgotPassword", "User")"><i class="fas fa-question-circle"></i> Quên mật khẩu?</a>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-login"><i class="fal fa-sign-in-alt mr-1"></i> Đăng nhập</button>
+                        </div> 
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+}

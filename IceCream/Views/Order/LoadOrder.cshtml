@@ -1,0 +1,100 @@
+﻿@model IceCream.ViewModel.OrderViewModel
+@{ 
+    var i = 1;
+    var typepay = "Chuyển khoản";
+    switch (Model.Order.TypePay)
+    {
+        case 1:
+            typepay = "Tiền mặt";
+            break;
+        case 2:
+            typepay = "Thẻ ATM";
+            break;
+    }
+    var typetransport = "Đến địa chỉ người nhận";
+    switch (Model.Order.Transport)
+    {
+        case 2:
+            typetransport = "Khách đến nhận hàng";
+            break;
+        case 3:
+            typetransport = "Qua bưu điện";
+            break;
+        case 4:
+            typetransport = "Hình thức khác";
+            break;
+    }
+    var tongtien = 0m;
+}
+<style>
+    .avatar-pro {
+        width: 130px;
+        height: auto;
+    }
+</style>
+<div class="load-order-view shadow-border">
+    <h2>Đơn hàng: @Model.Order.MaDonHang - [@Html.DisplayFor(a => a.Order.Status)]</h2>
+    <table class="list_table tablecenter table order-view">
+        <tr>
+            <th>STT</th>
+            <th>Hình ảnh</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
+        </tr>
+        @foreach (var product in Model.OrderDetailProduct)
+        {
+            var sotien = product.Quantity * product.Price;
+            <tr>
+                <td>@i</td>
+                <td><img class="avatar-pro" src="@Path.Combine("/Data/products/", product.Product.Image.Split(',')[0])?w=50" /></td>
+                <td>@product.Product.Name</td>
+                <td>@product.Quantity</td>
+                <td>@Html.DisplayFor(a => product.Price) đ</td>
+                <td>@Convert.ToDecimal(sotien).ToString("N0") đ</td>
+            </tr>
+            tongtien += Convert.ToDecimal(sotien);
+            i++;
+        }
+        <tr>
+            <td colspan="5">Tổng tiền:</td>
+            <td>@tongtien.ToString("N0")đ</td>
+        </tr>
+    </table>
+    <h2>Thông tin khách hàng</h2>
+    <div style="overflow: hidden">
+        <table class="form_table table order-view">
+            @*<tr>
+            <td colspan="2" style="font-weight: 700;">Thông tin người đặt hàng</td>
+        </tr>*@
+            <tr>
+                <td>Ngày đặt hàng</td>
+                <td>Họ và tên</td>
+                <td>Địa chỉ</td>
+                <td>Điện thoại</td>
+                <td>Email</td>
+            </tr>
+            <tr>
+                <td>@Model.Order.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@Model.Order.CustomerInfo.Fullname</td>
+                <td>@Model.Order.CustomerInfo.Address</td>
+                <td>@Model.Order.CustomerInfo.Mobile</td>
+                <td>@Model.Order.CustomerInfo.Email</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-weight: bold">Yêu cầu thêm</td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="5">@Model.Order.CustomerInfo.Body</td>
+            </tr>
+        </table>
+    </div>
+    <h2>Vận chuyển và thanh toán</h2>
+    <div class="box_content">
+        <p class="mb-1">Hình thức thanh toán: <strong>@typepay</strong></p>
+        <p class="mb-1">Hình thức giao hàng: <strong>@typetransport</strong></p>
+        @*<p>Ngày nhận hàng: <strong>@Model.Order.TransportDate.ToString("dd/MM/yyyy")</strong></p>*@
+    </div>
+
+</div>

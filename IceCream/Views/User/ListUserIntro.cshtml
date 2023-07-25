@@ -1,0 +1,32 @@
+﻿@model IceCream.ViewModel.ListUserIntroViewModel
+@using PagedList.Mvc
+
+@if (Model.Users.Any())
+{
+    var i = 0;
+    <div class="text-center title-section mb-lg-5 mb-4"><span>Danh sách khách hàng do bạn giới thiệu</span></div>
+    <div class="row bold">
+        <div class="col-3">@Html.LabelFor(model => model.User.Fullname)</div>
+        <div class="col-3">@Html.LabelFor(model => model.User.PhoneNumber)</div>
+        <div class="col-3">@Html.LabelFor(model => model.User.Email)</div>
+        <div class="col-3">@Html.LabelFor(model => model.User.Role)</div>
+    </div>
+    foreach (var item in Model.Users)
+    {
+        i++;
+        <div class="row @if (i % 2 == 0) { @Html.Raw("even") } ">
+            <div class="col-3">@item.Fullname</div>
+            <div class="col-3">@item.PhoneNumber</div>
+            <div class="col-3">@item.Email</div>
+            <div class="col-3">@Html.DisplayFor(Model => item.Role)</div>
+
+        </div>
+    }
+     
+    if (Model.Users.PageCount > 1)
+    {
+        <div class="text-center mt-lg-4 mt-3 px-2">
+            @Html.PagedListPager(Model.Users, page => Url.Action("ListUserIntro", "User", new { page }))
+        </div>
+    }
+}

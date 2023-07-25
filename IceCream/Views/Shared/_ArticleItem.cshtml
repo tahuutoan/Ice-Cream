@@ -1,0 +1,19 @@
+﻿@model IceCream.Models.Article
+
+<div class="box-article">
+    <div class="item-img">
+        <a href="@Url.Action("ArticleDetail", "Home", new {url = Model.Url})">
+            @if (Model.Image != null)
+            {
+                <img class="img img--article" src="@Path.Combine("/images/articles/", Model.Image)" alt="@Model.Subject" />
+            }
+        </a>
+    </div>
+    <div class="content p-3"> 
+        @*<div class="category truncate-h">@Model.ArticleCategory.CategoryName</div>*@
+        <a class="name truncate-h" href="@Url.Action("ArticleDetail", "Home", new{url = Model.Url})">@Model.Subject</a>
+        <p class="desc pt-2 truncate-h">@Model.Description</p>
+        <a href="@Url.Action("ArticleDetail", "Home", new{url = Model.Url})" class="btn-view" title="Xem thêm"><i class="fas fa-arrow-alt-right"></i></a>
+    </div>
+</div>
+

@@ -1,0 +1,45 @@
+﻿@using IceCream.Models
+@{
+    ViewBag.Title = "Đặt hàng thành công";
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+} 
+<div class="bg-breadcrumb">
+    <div class="container overflow-hidden">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Đặt hàng thành công</li>
+        </ol>
+    </div>
+</div>
+<div class="bg-gray py-lg-2 py-3">
+    <div class="title-section"><span>Đặt hàng thành công</span></div>
+    <div class="box-complete shadow-border p-4 my-lg-4">
+        <p>Cảm ơn quý khách đã mua hàng tại @config.Title</p>
+        <p>
+            Mã đơn hàng : <strong>@ViewBag.OrderId</strong>
+        </p>
+        <p>Chúng tôi đã gửi email xác nhận đơn hàng tới địa chỉ email của bạn.</p>
+        <p>
+            Nhân viên chăm sóc khách hàng của <strong>IceCream</strong> sẽ gọi điện xác minh lại đơn hàng của bạn sau khi nhận được đơn đặt hàng.
+        </p>
+        @*<p>
+            Có nhiều phương thức thanh toán để bạn lựa chọn (trả tiền khi giao hàng, thanh toán bẳng thẻ tín dụng hoặc ATM, chuyển khoản qua ngân hàng)
+        </p>*@
+        <p>
+            Để được hỗ trợ thêm vui lòng liên hệ Hotline <a href="tel:@config.Hotline">@config.Hotline</a> hoặc Email <a href="mailto:@config.Email">@config.Email</a>
+        </p>
+    </div>
+</div>
+  <canvas id="my-canvas"></canvas>
+
+@section scripts{
+    @*<script src="index.min.js"></script>*@
+    <script>
+
+        //generate firework
+        var confettiSettings = { target: 'my-canvas' };
+        var confetti = new ConfettiGenerator(confettiSettings);
+        confetti.render(); 
+    </script>
+} 
+

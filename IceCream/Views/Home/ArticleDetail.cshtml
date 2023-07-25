@@ -1,0 +1,76 @@
+﻿@model IceCream.ViewModel.ArticleDetailViewModel
+@{ 
+    ViewBag.Title = Model.Article.TitleMeta ?? Model.Article.Subject;
+    ViewBag.Description = Model.Article.DescriptionMeta ?? Model.Article.Description;
+}
+<div class="bg-breadcrumb">  
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("ArticleCategory", new {  url = Model.Article.ArticleCategory.Url })">
+                    @Model.Article.ArticleCategory.CategoryName
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page"> @Model.Article.Subject</li>
+        </ol>
+    </div>
+</div> 
+<div class="bg-light py-lg-4 py-3">
+    <div class="container"> 
+        <div class="row">
+            <div class="col-lg-3 col-12 order-lg-0 order-1">
+                @Html.Action("MenuArticle")
+            </div>
+            <div class="col-lg-9 col-12 order-lg-1 order-0">
+                <div class="box-border bg-white shadow content-detail">
+                    <h1 class="subject"> @Model.Article.Subject</h1>
+                    <span class="calendar">
+                        <i class="fal fa-calendar-alt mr-1"></i>@Model.Article.CreateDate.ToString("dd/MM/yyyy")
+                    </span>
+                    @if (Model.Article.Description != null)
+                    {
+                        <div class="sapo-detail">@Model.Article.Description</div>
+                    }
+                    @if (Model.Article.Body != null)
+                    {
+                        <div class="content-detail">@Html.Raw(Model.Article.Body)</div>
+                    }
+                    <hr />
+                    <ul class="ul-reset share mt-3 mt-lg-4">
+                        <li>Chia sẻ: </li>
+                        <li><button onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"><i class="fab fa-facebook-f"></i></button></li>
+                        <li><button class="twitter" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false"><i class="fab fa-twitter"></i></button></li>
+                        <li><button class="instagram" onclick="window.open('https://www.instagram.com/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"> <i class="fab fa-instagram"></i></button></li>
+                        <li><button class="linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"><i class="fab fa-linkedin-in"></i></button></li>
+                    </ul>
+                    <hr />
+                    <div class="fb-comments" data-href="@Request.Url" data-numposts="10" data-width="100%"></div>
+                </div>
+
+                @if (Model.Articles.Any())
+                { 
+                    <div class="box-border bg-white shadow relative-post mt-3 mt-lg-5">
+                        <h3 class="title-category mb-3">Bài viết liên quan</h3>
+                        @foreach (var item in Model.Articles)
+                        {
+                            <div class="media media-recently">
+                                @if (item.Image != null)
+                                {
+                                    <a href="@Url.Action("ArticleDetail", new { url = item.Url })">
+                                        <img src="@Path.Combine("/images/articles/", item.Image)" class="img-relativePost" alt="@item.Subject" />
+                                    </a>
+                                }
+                                <div class="media-body content">
+                                    <a href="@Url.Action("ArticleDetail", new { url = item.Url })" class="name truncate-h pt-2">@item.Subject</a>
+                                    <p class="desc truncate-h">@item.Description</p>
+                                </div> 
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>

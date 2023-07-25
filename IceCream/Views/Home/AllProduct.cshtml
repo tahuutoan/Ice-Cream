@@ -1,0 +1,69 @@
+﻿@model IceCream.ViewModel.AllProductViewModel
+@using PagedList.Mvc 
+@{ 
+    ViewBag.Title = "Sản phẩm";
+}
+
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")"><i class="fas fa-home mr-1"></i></a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tất cả sản phẩm</li>
+        </ol>
+    </div>
+</div> 
+
+
+<section class="products">
+    <div class="container py-lg-4 py-3">
+        <div class="row row-gutter-8"> 
+            <div class="col-sm-12 col-lg-3 order-lg-0 order-1">
+                @Html.Action("MenuProductCategory")
+            </div>
+            <div class="col-sm-12 col-lg-9 order-lg-1 order-0">
+                <div class="box-category main mb-lg-4 mb-3 d-flex justify-content-end">
+                    <div class="sort"> 
+                        <form action="@Url.Action("AllProduct")" method="get"> 
+                            <div class="input-group input-group-sm sort-product">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Sắp xếp sản phẩm theo: </span>
+                                </div>  
+                                <select name="Sort" onchange="$(this).parents('form').submit();" )>
+                                    <option value="sort" @if (Model.Sort == "sort") { @Html.Raw("selected='selected'") }>Sản phẩm nổi bật</option>
+                                    <option value="date-new" @if (Model.Sort == "date-new") { @Html.Raw("selected='selected'") }>Sản phẩm mới nhất</option>
+                                    <option value="date-old" @if (Model.Sort == "date-old") { @Html.Raw("selected='selected'") }>Sản phẩm cũ nhất</option>
+                                    <option value="name" @if (Model.Sort == "name") { @Html.Raw("selected='selected'") }>Thứ tự tên A->Z</option>
+                                    <option value="name-desc" @if (Model.Sort == "name-desc") { @Html.Raw("selected='selected'") }>Thứ tự tên Z->A</option> 
+                                    @*<option value="sale" @if (Model.Sort == "sale") { @Html.Raw("selected='selected'") }>Đang được khuyến mãi</option>*@
+                                    <option value="price-des" @if (Model.Sort == "price-des") { @Html.Raw("selected='selected'") }>Giá từ cao -> thấp</option>
+                                    <option value="price-asc" @if (Model.Sort == "price-asc") { @Html.Raw("selected='selected'") }>Giá từ thấp -> cao</option>
+                                </select>
+                            </div>
+                        </form> 
+                    </div>
+                </div>
+                @if (Model.Products.Any()) 
+                {
+                    <div class="row no-gutters">
+                        @foreach (var product in Model.Products)
+                         {
+                             <div class="col-6 col-md-4 col-lg-4 mb-3 px-2">
+                                @Html.Partial("_ItemProduct", product)
+                             </div>
+                         }
+                    </div>
+                    if (Model.Products.PageCount > 1)
+                    {
+                        <div class="text-center mt-lg-4 mt-3 py-0 px-2">
+                            @Html.PagedListPager(Model.Products, page => Url.Action("AllProduct", new { page, Sort = Model.Sort }))
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class=" alert alert-info small mt-3">Nội dung hiện chưa được cập nhật.Vui lòng quay lại sau !!!</div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

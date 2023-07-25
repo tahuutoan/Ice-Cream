@@ -1,0 +1,36 @@
+﻿@model IceCream.ViewModel.UpdateMemberViewModel
+@{
+    ViewBag.Title = "Cập nhật thông tin thành viên";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <h2>Cập nhật thông tin thành viên</h2> 
+    <a class="btn quick-link" href="@Url.Action("ListMember")"><i class="far fa-list mr-1"></i> Danh sách thành viên</a>
+    <div class="row box_content">
+        @using (Html.BeginForm("UpdateMember", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.User.Id)
+            <div class="col-lg-6 col-12">
+                <table class="form_table">
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.User.Fullname)</td>
+                        <td class="form_text">@Html.DisplayFor(model => model.User.Fullname)</td>
+                    </tr> 
+
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.User.Active)</td> 
+                        <td class="form_text">@Html.CheckBoxFor(model => model.User.Active, new { @checked = "checked" })</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text"><input type="submit" class="btn quick-link" value="Cập nhật" /></td>
+                    </tr>
+                </table>
+             </div>
+        }
+    </div>
+</div>
+
+
